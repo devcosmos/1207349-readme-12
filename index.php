@@ -40,6 +40,29 @@ $posts = [
     ],
 ];
 
+function reduce_text($text, $max_symbols = 300) {
+    $words = explode(' ', $text);
+    $symbol_counter = 0;
+    $word_counter = 0;
+
+    while ($symbol_counter <= $max_symbols && $word_counter < count($words)) {
+        $symbol_counter += strlen($words[$word_counter]);
+        if ($symbol_counter <= $max_symbols) {
+            $word_counter++;
+        }
+    }
+
+    $text = implode(' ', array_slice($words, 0, $word_counter));
+
+    if ($symbol_counter > $max_symbols) {
+        $text = '<p>' . $text . '...</p><a class="post-text__more-link" href="#">Читать далее</a>';
+    } else {
+        $text = '<p>' . $text . '</p>';
+    }
+
+    return $text;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -252,7 +275,7 @@ $posts = [
                         <cite><?= $post['user_name'] ?></cite>
                     </blockquote>
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                    <p><?= $post['content'] ?></p>
+                    <?= reduce_text($post['content'], 300); ?>
                     <?php elseif ($post['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
                         <img src="img/<?= $post['content'] ?>" alt="Фото от пользователя <?= $post['user_name'] ?>" width="360" height="240">
