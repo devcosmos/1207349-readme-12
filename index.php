@@ -251,13 +251,13 @@ $posts = [
                         <p><?= $post['content'] ?></p>
                         <cite><?= $post['user_name'] ?></cite>
                     </blockquote>
-                    <?php elseif($post['type'] === 'post-text'): ?>
+                    <?php elseif ($post['type'] === 'post-text'): ?>
                     <p><?= $post['content'] ?></p>
-                    <?php elseif($post['type'] === 'post-photo'): ?>
+                    <?php elseif ($post['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
                         <img src="img/<?= $post['content'] ?>" alt="Фото от пользователя <?= $post['user_name'] ?>" width="360" height="240">
                     </div>
-                    <?php elseif($post['type'] === 'post-link'): ?>
+                    <?php elseif ($post['type'] === 'post-link'): ?>
                     <div class="post-link__wrapper">
                         <a class="post-link__external" href="http://<?= $post['content'] ?>" title="Перейти по ссылке">
                             <div class="post-link__info-wrapper">
