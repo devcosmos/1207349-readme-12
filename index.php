@@ -8,37 +8,63 @@ $posts = [
         'type' => 'post-quote',
         'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
         'user_name' => 'Лариса',
-        'user_picture' => 'userpic-larisa-small.jpg'
+        'user_picture' => 'userpic-larisa-small.jpg',
     ],
     [
         'title' => 'Игра престолов',
         'type' => 'post-text',
         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
         'user_name' => 'Владик',
-        'user_picture' => 'userpic.jpg'
+        'user_picture' => 'userpic.jpg',
     ],
     [
         'title' => 'Наконец, обработал фотки!',
         'type' => 'post-photo',
         'content' => 'rock-medium.jpg',
         'user_name' => 'Виктор',
-        'user_picture' => 'userpic-mark.jpg'
+        'user_picture' => 'userpic-mark.jpg',
     ],
     [
         'title' => 'Моя мечта',
         'type' => 'post-photo',
         'content' => 'coast-medium.jpg',
         'user_name' => 'Лариса',
-        'user_picture' => 'userpic-larisa-small.jpg'
+        'user_picture' => 'userpic-larisa-small.jpg',
     ],
     [
         'title' => 'Лучшие курсы',
         'type' => 'post-link',
         'content' => 'www.htmlacademy.ru',
         'user_name' => 'Владик',
-        'user_picture' => 'userpic.jpg'
-    ]
-]
+        'user_picture' => 'userpic.jpg',
+    ],
+];
+
+function reduce_text($text, $max_symbols = 300) {
+    $words = explode(' ', $text);
+    $symbol_counter = 0;
+    $word_counter = 0;
+
+    while ($symbol_counter <= $max_symbols && $word_counter < count($words)) {
+        $symbol_counter += mb_strlen($words[$word_counter]);
+
+        if ($symbol_counter < $max_symbols) {
+            $symbol_counter++;
+        }
+
+        if ($symbol_counter <= $max_symbols) {
+            $word_counter++;
+        }
+    }
+
+    $text = implode(' ', array_slice($words, 0, $word_counter));
+
+    if ($symbol_counter > $max_symbols) {
+        $text = $text . '...';
+    }
+
+    return $text;
+}
 
 ?>
 <!DOCTYPE html>
@@ -252,7 +278,10 @@ $posts = [
                         <cite><?= $post['user_name'] ?></cite>
                     </blockquote>
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                    <p><?= $post['content'] ?></p>
+                    <p><?= reduce_text($post['content'], 300) ?></p>
+                    <?php if (mb_strlen($post['content']) > 300): ?>
+                    <a class="post-text__more-link" href="#">Читать далее</a>
+                    <?php endif ?>
                     <?php elseif ($post['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
                         <img src="img/<?= $post['content'] ?>" alt="Фото от пользователя <?= $post['user_name'] ?>" width="360" height="240">
