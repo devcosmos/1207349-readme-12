@@ -46,7 +46,11 @@ function reduce_text($text, $max_symbols = 300) {
     $word_counter = 0;
 
     while ($symbol_counter <= $max_symbols && $word_counter < count($words)) {
-        $symbol_counter += strlen($words[$word_counter]);
+        $symbol_counter += mb_strlen($words[$word_counter]);
+
+        if ($symbol_counter < $max_symbols) {
+            $symbol_counter++;
+        }
 
         if ($symbol_counter <= $max_symbols) {
             $word_counter++;
@@ -56,9 +60,7 @@ function reduce_text($text, $max_symbols = 300) {
     $text = implode(' ', array_slice($words, 0, $word_counter));
 
     if ($symbol_counter > $max_symbols) {
-        $text = '<p>' . $text . '...</p><a class="post-text__more-link" href="#">Читать далее</a>';
-    } else {
-        $text = '<p>' . $text . '</p>';
+        $text = $text . '...';
     }
 
     return $text;
@@ -276,7 +278,10 @@ function reduce_text($text, $max_symbols = 300) {
                         <cite><?= $post['user_name'] ?></cite>
                     </blockquote>
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                    <?= reduce_text($post['content'], 300) ?>
+                    <p><?= reduce_text($post['content'], 300) ?></p>
+                    <?php if (mb_strlen($post['content']) > 300): ?>
+                    <a class="post-text__more-link" href="#">Читать далее</a>
+                    <?php endif ?>
                     <?php elseif ($post['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
                         <img src="img/<?= $post['content'] ?>" alt="Фото от пользователя <?= $post['user_name'] ?>" width="360" height="240">
