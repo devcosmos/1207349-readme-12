@@ -86,6 +86,11 @@
         </div>
         <div class="popular__posts">
             <?php foreach($posts as $post): ?>
+            <?php 
+            $post['title'] = htmlspecialchars($post['title']);
+            $post['user_name'] = htmlspecialchars($post['user_name']);
+            $post['content'] = htmlspecialchars($post['content']);
+            ?>
             <article class="popular__post post <?= $post['type'] ?>">
                 <header class="post__header">
                     <h2><?= $post['title'] ?></h2>
