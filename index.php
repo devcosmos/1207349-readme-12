@@ -41,29 +41,27 @@ $posts = [
 ];
 
 function reduce_text($text, $max_symbols = 300) {
+    if (mb_strlen($text) <= $max_symbols) {
+		return $text;
+	}
+
     $words = explode(' ', $text);
     $symbol_counter = 0;
     $word_counter = 0;
 
-    while ($symbol_counter <= $max_symbols && $word_counter < count($words)) {
-        $symbol_counter += mb_strlen($words[$word_counter]);
+    foreach($words as $word) {
+        $symbol_counter += mb_strlen($word);
+		if ($symbol_counter > $max_symbols) {
+			break;
+		}
 
-        if ($symbol_counter < $max_symbols) {
-            $symbol_counter++;
-        }
-
-        if ($symbol_counter <= $max_symbols) {
-            $word_counter++;
-        }
+		$symbol_counter++;
+        $word_counter++;
     }
 
     $text = implode(' ', array_slice($words, 0, $word_counter));
 
-    if ($symbol_counter > $max_symbols) {
-        $text = $text . '...';
-    }
-
-    return $text;
+    return $text . '...';
 }
 
 ?>
