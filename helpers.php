@@ -142,6 +142,16 @@ function include_template($name, array $data = [])
 }
 
 /**
+ * Функция-обертка для htmlspecialchars
+ * @param string $str Конвертируемая строка
+ * @return string Преобразованная строка
+ */
+function hsc($str) 
+{
+    return htmlspecialchars($str, ENT_QUOTES);
+}
+
+/**
  * Функция проверяет доступно ли видео по ссылке на youtube
  * @param string $url ссылка на видео
  *
