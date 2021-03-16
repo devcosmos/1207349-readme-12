@@ -42,30 +42,6 @@ $posts = [
     ],
 ];
 
-function reduce_text($text, $max_symbols = 300) {
-    if (mb_strlen($text) <= $max_symbols) {
-		return $text;
-	}
-
-    $words = explode(' ', $text);
-    $symbol_counter = 0;
-    $word_counter = 0;
-
-    foreach($words as $word) {
-        $symbol_counter += mb_strlen($word);
-		if ($symbol_counter > $max_symbols) {
-			break;
-		}
-
-		$symbol_counter++;
-        $word_counter++;
-    }
-
-    $text = implode(' ', array_slice($words, 0, $word_counter));
-
-    return $text . '...';
-}
-
 $main_content = include_template('main.php', ['posts' => $posts]);
 $layout_content = include_template('layout.php', [
     'content' => $main_content, 

@@ -265,3 +265,34 @@ function generate_random_date($index)
 
     return $dt;
 }
+
+/**
+ * Функция для сокращения текста на определённое количество символов
+ * @param string $text Исходный текст
+ * @param int $max_symbols Максимальное количество символов
+ * @return string 
+ */
+function reduce_text($text, $max_symbols = 300) 
+{
+    if (mb_strlen($text) <= $max_symbols) {
+		return $text;
+	}
+
+    $words = explode(' ', $text);
+    $symbol_counter = 0;
+    $word_counter = 0;
+
+    foreach($words as $word) {
+        $symbol_counter += mb_strlen($word);
+		if ($symbol_counter > $max_symbols) {
+			break;
+		}
+
+		$symbol_counter++;
+        $word_counter++;
+    }
+
+    $text = implode(' ', array_slice($words, 0, $word_counter));
+
+    return $text . '...';
+}
