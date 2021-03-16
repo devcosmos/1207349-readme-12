@@ -87,9 +87,11 @@
         <div class="popular__posts">
             <?php foreach($posts as $post): ?>
             <?php 
-            $post['title'] = htmlspecialchars($post['title']);
-            $post['user_name'] = htmlspecialchars($post['user_name']);
-            $post['content'] = htmlspecialchars($post['content']);
+            $post['title'] = hsc($post['title']);
+            $post['type'] = hsc($post['type']);
+            $post['content'] = hsc($post['content']);
+            $post['user_name'] = hsc($post['user_name']);
+            $post['user_picture'] = hsc($post['user_picture']);
             ?>
             <article class="popular__post post <?= $post['type'] ?>">
                 <header class="post__header">
