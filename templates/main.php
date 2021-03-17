@@ -86,44 +86,37 @@
         </div>
         <div class="popular__posts">
             <?php foreach($posts as $post): ?>
-            <?php 
-            $post['title'] = hsc($post['title']);
-            $post['type'] = hsc($post['type']);
-            $post['content'] = hsc($post['content']);
-            $post['user_name'] = hsc($post['user_name']);
-            $post['user_picture'] = hsc($post['user_picture']);
-            ?>
-            <article class="popular__post post <?= $post['type'] ?>">
+            <article class="popular__post post <?= hsc($post['type']) ?>">
                 <header class="post__header">
-                    <h2><?= $post['title'] ?></h2>
+                    <h2><?= hsc($post['title']) ?></h2>
                 </header>
                 <div class="post__main ">
                     <?php if ($post['type'] === 'post-quote'): ?>
                     <blockquote>
-                        <p><?= $post['content'] ?></p>
-                        <cite><?= $post['user_name'] ?></cite>
+                        <p><?= hsc($post['content']) ?></p>
+                        <cite><?= hsc($post['user_name']) ?></cite>
                     </blockquote>
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                    <p><?= reduce_text($post['content'], 300) ?></p>
+                    <p><?= hsc(reduce_text($post['content'], 300)) ?></p>
                     <?php if (mb_strlen($post['content']) > 300): ?>
                     <a class="post-text__more-link" href="#">Читать далее</a>
                     <?php endif ?>
                     <?php elseif ($post['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
-                        <img src="img/<?= $post['content'] ?>" alt="Фото от пользователя <?= $post['user_name'] ?>" width="360" height="240">
+                        <img src="img/<?= hsc($post['content']) ?>" alt="Фото от пользователя" width="360" height="240">
                     </div>
                     <?php elseif ($post['type'] === 'post-link'): ?>
                     <div class="post-link__wrapper">
-                        <a class="post-link__external" href="http://<?= $post['content'] ?>" title="Перейти по ссылке">
+                        <a class="post-link__external" href="http://<?= hsc($post['content']) ?>" title="Перейти по ссылке">
                             <div class="post-link__info-wrapper">
                                 <div class="post-link__icon-wrapper">
                                     <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
                                 </div>
                                 <div class="post-link__info">
-                                    <h3><?= $post['title'] ?></h3>
+                                    <h3><?= hsc($post['title']) ?></h3>
                                 </div>
                             </div>
-                            <span><?= $post['content'] ?></span>
+                            <span><?= hsc($post['content']) ?></span>
                         </a>
                     </div>
                     <?php endif ?>
@@ -132,10 +125,10 @@
                     <div class="post__author">
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
-                                <img class="post__author-avatar" src="img/<?= $post['user_picture'] ?>" alt="Аватар пользователя">
+                                <img class="post__author-avatar" src="img/<?= hsc($post['user_picture']) ?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?= $post['user_name'] ?></b>
+                                <b class="post__author-name"><?= hsc($post['user_name']) ?></b>
                                 <time class="post__time" datetime="">дата</time>
                             </div>
                         </a>
