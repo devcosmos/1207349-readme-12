@@ -133,19 +133,22 @@ function get_noun_plural_form(int $number, string $one, string $two, string $man
 function include_template($name, array $data = [])
 {
     $name = 'templates/' . $name;
-    $result = '';
-
-    if (!is_readable($name)) {
-        return $result;
-    }
 
     ob_start();
     extract($data);
     require $name;
 
-    $result = ob_get_clean();
+    return ob_get_clean();
+}
 
-    return $result;
+/**
+ * Функция-обертка для htmlspecialchars
+ * @param string $str Конвертируемая строка
+ * @return string Преобразованная строка
+ */
+function hsc($str) 
+{
+    return htmlspecialchars($str, ENT_QUOTES);
 }
 
 /**
@@ -261,4 +264,35 @@ function generate_random_date($index)
     $dt = date('Y-m-d H:i:s', $ts);
 
     return $dt;
+}
+
+/**
+ * Функция для сокращения текста на определённое количество символов
+ * @param string $text Исходный текст
+ * @param int $max_symbols Максимальное количество символов
+ * @return string 
+ */
+function reduce_text($text, $max_symbols = 300) 
+{
+    if (mb_strlen($text) <= $max_symbols) {
+		return $text;
+	}
+
+    $words = explode(' ', $text);
+    $symbol_counter = 0;
+    $word_counter = 0;
+
+    foreach($words as $word) {
+        $symbol_counter += mb_strlen($word);
+		if ($symbol_counter > $max_symbols) {
+			break;
+		}
+
+		$symbol_counter++;
+        $word_counter++;
+    }
+
+    $text = implode(' ', array_slice($words, 0, $word_counter));
+
+    return $text . '...';
 }
