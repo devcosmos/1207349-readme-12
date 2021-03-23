@@ -296,3 +296,36 @@ function reduce_text($text, $max_symbols = 300)
 
     return $text . '...';
 }
+
+/**
+ * Узнаём дату в виде количества прошедших с данного момента минут, часов, дней, недель или месяцев
+ * @param object $date дата, когда произошло событие
+ * @return string 
+ */
+function get_date_diff_from_now($date) 
+{
+    $date_now = date_create("now");
+    $date_diff = date_diff($date_now, $date);
+
+    $i_count = date_interval_format($date_diff, "%i");
+    $h_count = date_interval_format($date_diff, "%h");
+    $d_count = date_interval_format($date_diff, "%d");
+    $m_count = date_interval_format($date_diff, "%m");
+
+    $result = '';
+    
+    if ($m_count > 0) {
+        $result = $m_count . ' ' . get_noun_plural_form($m_count, 'месяц', 'месяца', 'месяцев');
+    } elseif ($d_count > 7) {
+        $w_count =  round($d_count / 7, 0, PHP_ROUND_HALF_EVEN);
+        $result = $w_count . ' ' . get_noun_plural_form($w_count, 'неделя', 'недели', 'недель');
+    } elseif ($d_count <= 7 && $d_count > 0) {
+        $result = $d_count . ' ' . get_noun_plural_form($d_count, 'день', 'дня', 'дней');
+    } elseif ($h_count < 24 && $h_count > 0) {
+        $result = $h_count . ' ' . get_noun_plural_form($h_count, 'час', 'часа', 'часов');
+    } elseif ($i_count < 60) {
+        $result = $i_count . ' ' . get_noun_plural_form($i_count, 'минута', 'минуты', 'минут');
+    }
+
+    return $result . ' назад';
+}
