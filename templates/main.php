@@ -85,14 +85,8 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php 
-            $i = 0;
-            foreach($posts as $post):
-
-            date_default_timezone_set("Europe/Moscow");
-            $int_post_date = generate_random_date($i);
-            $post_date = date_create($int_post_date);
-            ?>
+            <?php foreach($posts as $post): ?>
+            <?php $post_date = date_create($post['date']) ?>
             <article class="popular__post post <?= hsc($post['type']) ?>">
                 <header class="post__header">
                     <h2><?= hsc($post['title']) ?></h2>
@@ -138,7 +132,7 @@
                                 <b class="post__author-name"><?= hsc($post['user_name']) ?></b>
                                 <time 
                                     class="post__time" 
-                                    datetime="<?= hsc($int_post_date) ?>" 
+                                    datetime="<?= hsc($post['date']) ?>" 
                                     title="<?= hsc(date_format($post_date, 'd.m.Y H:i')) ?>"
                                 ><?= hsc(get_date_diff_from_now($post_date)) ?></time>
                             </div>
@@ -167,7 +161,6 @@
                     </div>
                 </footer>
             </article>
-            <?php $i++ ?>
             <?php endforeach ?>
         </div>
     </div>
