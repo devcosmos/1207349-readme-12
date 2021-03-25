@@ -86,6 +86,7 @@
         </div>
         <div class="popular__posts">
             <?php foreach($posts as $post): ?>
+            <?php $post_date = date_create($post['date']) ?>
             <article class="popular__post post <?= hsc($post['type']) ?>">
                 <header class="post__header">
                     <h2><?= hsc($post['title']) ?></h2>
@@ -129,7 +130,11 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?= hsc($post['user_name']) ?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <time 
+                                    class="post__time" 
+                                    datetime="<?= hsc($post['date']) ?>" 
+                                    title="<?= hsc(date_format($post_date, 'd.m.Y H:i')) ?>"
+                                ><?= hsc(get_date_diff_from_now($post_date)) ?></time>
                             </div>
                         </a>
                     </div>

@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set("Europe/Moscow");
+
 require 'helpers.php';
 
 $is_auth = rand(0, 1);
@@ -42,7 +44,12 @@ $posts = [
     ],
 ];
 
-$main_content = include_template('main.php', ['posts' => $posts]);
+$posts_with_date = [];
+foreach ($posts as $i => $post) {
+    array_push($posts_with_date, array_merge($post, ['date' => generate_random_date($i)]));
+}
+
+$main_content = include_template('main.php', ['posts' => $posts_with_date]);
 $layout_content = include_template('layout.php', [
     'content' => $main_content, 
     'is_auth' => $is_auth, 
