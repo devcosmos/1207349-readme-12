@@ -29,9 +29,7 @@ CREATE TABLE posts (
   img_path VARCHAR(255),
   video_path VARCHAR(255),
   link_path VARCHAR(255),
-  show_count INT,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (content_type_id) REFERENCES content_types(id)
+  show_count INT
 );
 
 CREATE TABLE comments (
@@ -39,25 +37,19 @@ CREATE TABLE comments (
   dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   content TEXT,
   user_id INT,
-  post_id INT,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (post_id) REFERENCES posts(id)
+  post_id INT
 );
 
 CREATE TABLE likes (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT,
-  post_id INT,
-  FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (post_id) REFERENCES posts(id)
+  post_id INT
 );
 
 CREATE TABLE subscribers (
   id INT AUTO_INCREMENT PRIMARY KEY,
   subscriber_id INT,
-  user_id INT,
-  FOREIGN KEY (subscriber_id) REFERENCES users(id),
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  user_id INT
 );
 
 CREATE TABLE messages (
@@ -65,9 +57,7 @@ CREATE TABLE messages (
   dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   content TEXT,
   sender_id INT,
-  recipient_id INT,
-  FOREIGN KEY (sender_id) REFERENCES users(id),
-  FOREIGN KEY (recipient_id) REFERENCES users(id)
+  recipient_id INT
 );
 
 CREATE TABLE hashtags (
@@ -78,10 +68,5 @@ CREATE TABLE hashtags (
 CREATE TABLE post_tags (
   id INT AUTO_INCREMENT PRIMARY KEY,
   post_id INT,
-  hashtag_id INT,
-  FOREIGN KEY (post_id) REFERENCES posts(id),
-  FOREIGN KEY (hashtag_id) REFERENCES hashtags(id)
+  hashtag_id INT
 );
-
-CREATE INDEX content_type ON content_types(title);
-CREATE INDEX hashtag ON hashtags(title);
