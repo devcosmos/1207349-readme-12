@@ -50,3 +50,26 @@ INSERT INTO posts
        content = 'www.htmlacademy.ru',
        show_count = 100;
 
+SELECT p.content, u.username, ct.title
+  FROM posts AS p
+  JOIN users AS u 
+    ON p.user_id = u.id
+  JOIN content_types AS ct 
+    ON p.content_type_id = ct.id
+ ORDER BY show_count DESC;
+
+SELECT * 
+  FROM posts 
+ WHERE user_id = 2;
+
+SELECT c.content, u.username
+  FROM comments AS c
+  JOIN users AS u
+    ON c.user_id = u.id
+ WHERE c.post_id = 2;
+
+INSERT INTO likes
+   SET user_id = 1, post_id = 1;
+
+INSERT INTO subscribers
+   SET subscriber_id = 1, user_id = 1;
