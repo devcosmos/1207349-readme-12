@@ -1,3 +1,4 @@
+-- список типов контента для поста
 INSERT INTO content_types (title, icon_class) 
 VALUES ('Текст', 'post-text'),
        ('Цитата', 'post-quote'),
@@ -5,16 +6,19 @@ VALUES ('Текст', 'post-text'),
        ('Видео', 'post-video'),
        ('Ссылка', 'post-link'); 
 
+-- придумайте пару пользователей
 INSERT INTO users (email, password, username, avatar_path) 
 VALUES ('larisa@readme.ru', 'qwertyL', 'Лариса', 'userpic-larisa-small.jpg'),
        ('vadik@readme.ru', 'qwertyV', 'Вадик', 'userpic.jpg'),
        ('viktor@readme.ru', 'qwertyV', 'Виктор', 'userpic-mark.jpg');
 
+-- придумайте пару комментариев к разным постам
 INSERT INTO comments 
    SET user_id = 1, post_id = 2, content = 'Текст комментария для второго поста';
 INSERT INTO comments 
    SET user_id = 2, post_id = 1, content = 'Текст комментария для первого поста';
 
+-- существующий список постов
 INSERT INTO posts 
    SET user_id = 1, 
        content_type_id = 2, 
@@ -50,6 +54,7 @@ INSERT INTO posts
        content = 'www.htmlacademy.ru',
        show_count = 100;
 
+-- получить список постов с сортировкой по популярности и вместе с именами авторов и типом контента
 SELECT p.content, u.username, ct.title
   FROM posts AS p
   JOIN users AS u 
@@ -58,18 +63,22 @@ SELECT p.content, u.username, ct.title
     ON p.content_type_id = ct.id
  ORDER BY show_count DESC;
 
+-- получить список постов для конкретного пользователя
 SELECT * 
   FROM posts 
  WHERE user_id = 2;
 
+-- получить список комментариев для одного поста, в комментариях должен быть логин пользователя
 SELECT c.content, u.username
   FROM comments AS c
   JOIN users AS u
     ON c.user_id = u.id
  WHERE c.post_id = 2;
 
+-- добавить лайк к посту
 INSERT INTO likes
    SET user_id = 1, post_id = 1;
 
+-- подписаться на пользователя
 INSERT INTO subscribers
    SET subscriber_id = 1, user_id = 1;
