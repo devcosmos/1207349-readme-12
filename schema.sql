@@ -70,3 +70,6 @@ CREATE TABLE post_tags (
   post_id INT,
   hashtag_id INT
 );
+
+CREATE INDEX p_user_id ON posts (user_id); -- для ускорения поиска по пользователям в таблице с постами
+CREATE INDEX c_post_id ON comments (post_id); -- для ускорения поиска по постам в таблице с комментариями
