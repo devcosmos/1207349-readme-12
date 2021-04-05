@@ -1,16 +1,13 @@
 <?php
 date_default_timezone_set("Europe/Moscow");
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+$config = require 'config.php';
+
+$db = new mysqli($config['db']['host'], $config['db']['username'], $config['db']['password'], $config['db']['dbname']);
+$db->set_charset($config['db']['charset']);
 
 require 'helpers.php';
-
-$con_db = mysqli_connect('localhost', 'root', 'root', 'readme');
-
-if ($con_db === false) {
-    print('Ошибка подключения: ' . mysqli_connect_error());
-    die();
-}
-
-mysqli_set_charset($con_db, 'utf8');
 
 $sql_select_content_types = '
     SELECT * FROM content_types
@@ -25,8 +22,8 @@ $sql_select_popular_posts = '
      ORDER BY show_count DESC
 ';
 
-$content_types = select_query($con_db, $sql_select_content_types);
-$popular_posts = select_query($con_db, $sql_select_popular_posts);
+$content_types = select_query($db, $sql_select_content_types);
+$popular_posts = select_query($db, $sql_select_popular_posts);
 
 $is_auth = rand(0, 1);
 $user_name = 'Валерий';
