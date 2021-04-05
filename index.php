@@ -22,8 +22,8 @@ $sql_select_popular_posts = '
      ORDER BY show_count DESC
 ';
 
-$content_types = select_query($db, $sql_select_content_types);
-$popular_posts = select_query($db, $sql_select_popular_posts);
+$content_types = select_query_and_fetch_all($db, $sql_select_content_types);
+$popular_posts = select_query_and_fetch_all($db, $sql_select_popular_posts);
 
 $is_auth = rand(0, 1);
 $user_name = 'Валерий';

@@ -332,13 +332,13 @@ function get_date_diff_from_now($date)
 
 /**
  * Получаем ответ на запрос в виде массива или false, если произошла ошибка
- * @param object $con подключение к БД
+ * @param object $db объект БД
  * @param string $sql_select запрос в БД
  * @return array|false
  */
-function select_query($con, $sql_select) 
+function select_query_and_fetch_all($db, $sql_select) 
 {
-    $result = mysqli_query($con, $sql_select);
+    $result = $db->query($sql_select);
 
-    return $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : false;
+    return $result ? $result->fetch_all(MYSQLI_ASSOC) : false;
 }
