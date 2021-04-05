@@ -1,13 +1,13 @@
 -- список типов контента для поста
-INSERT INTO content_types (title, icon_class) 
-VALUES ('Текст', 'post-text'),
-       ('Цитата', 'post-quote'),
-       ('Картинка', 'post-photo'),
-       ('Видео', 'post-video'),
-       ('Ссылка', 'post-link'); 
+INSERT INTO content_types (type_name, type_class) 
+VALUES ('Текст', 'text'),
+       ('Цитата', 'quote'),
+       ('Картинка', 'photo'),
+       ('Видео', 'video'),
+       ('Ссылка', 'link'); 
 
 -- придумайте пару пользователей
-INSERT INTO users (email, password, username, avatar_path) 
+INSERT INTO users (email, password, username, user_picture) 
 VALUES ('larisa@readme.ru', 'qwertyL', 'Лариса', 'userpic-larisa-small.jpg'),
        ('vadik@readme.ru', 'qwertyV', 'Вадик', 'userpic.jpg'),
        ('viktor@readme.ru', 'qwertyV', 'Виктор', 'userpic-mark.jpg');
@@ -55,7 +55,7 @@ INSERT INTO posts
        show_count = 100;
 
 -- получить список постов с сортировкой по популярности и вместе с именами авторов и типом контента
-SELECT p.content, u.username, ct.title
+SELECT p.content, u.username, ct.type_name
   FROM posts AS p
   JOIN users AS u 
     ON p.user_id = u.id
