@@ -329,3 +329,16 @@ function get_date_diff_from_now($date)
 
     return $result . ' назад';
 }
+
+/**
+ * Получаем ответ на запрос в виде массива или false, если произошла ошибка
+ * @param object $con подключение к БД
+ * @param string $sql_select запрос в БД
+ * @return array|false
+ */
+function select_query($con, $sql_select) 
+{
+    $result = mysqli_query($con, $sql_select);
+
+    return $result ? mysqli_fetch_all($result, MYSQLI_ASSOC) : false;
+}
