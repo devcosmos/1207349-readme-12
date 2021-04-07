@@ -272,7 +272,7 @@ function generate_random_date($index)
  * @param int $max_symbols Максимальное количество символов
  * @return string 
  */
-function reduce_text($text, $max_symbols = 300) 
+function reduce_text(string $text, int $max_symbols = 300) 
 {
     if (mb_strlen($text) <= $max_symbols) {
 		return $text;
@@ -302,7 +302,7 @@ function reduce_text($text, $max_symbols = 300)
  * @param object $date дата, когда произошло событие
  * @return string 
  */
-function get_date_diff_from_now($date) 
+function get_date_diff_from_now(object $date) 
 {
     $date_now = date_create("now");
     $date_diff = date_diff($date_now, $date);
@@ -334,11 +334,12 @@ function get_date_diff_from_now($date)
  * Получаем ответ на запрос в виде массива или false, если произошла ошибка
  * @param object $db объект БД
  * @param string $sql_select запрос в БД
- * @return array|false
+ * @return array ответ БД на запрос в виде массива
+ * @throws mysqli_sql_exception
  */
-function select_query_and_fetch_all($db, $sql_select) 
+function select_query_and_fetch_all(object $db, string $sql_select) 
 {
     $result = $db->query($sql_select);
 
-    return $result ? $result->fetch_all(MYSQLI_ASSOC) : false;
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
