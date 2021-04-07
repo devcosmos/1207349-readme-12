@@ -9,13 +9,13 @@ CREATE TABLE users (
   email VARCHAR(128) NOT NULL UNIQUE,
   username VARCHAR(128) NOT NULL,
   password VARCHAR(64) NOT NULL,
-  avatar_path VARCHAR(255)
+  user_picture VARCHAR(255)
 );
 
 CREATE TABLE content_types (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL UNIQUE,
-  icon_class VARCHAR(255) NOT NULL UNIQUE
+  type_name VARCHAR(255) NOT NULL UNIQUE,
+  type_class VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE posts (

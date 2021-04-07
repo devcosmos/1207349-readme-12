@@ -41,72 +41,46 @@
                             <span>Все</span>
                         </a>
                     </li>
+                    <?php foreach ($content_types as $type): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button" href="#">
-                            <span class="visually-hidden">Фото</span>
-                            <svg class="filters__icon" width="22" height="18">
-                                <use xlink:href="#icon-filter-photo"></use>
+                        <a class="filters__button filters__button--<?= $type['type_class'] ?> button" href="#">
+                            <span class="visually-hidden"><?= $type['type_name'] ?></span>
+                            <svg 
+                                class="filters__icon" 
+                                width="<?= $icons_size[$type['type_class']]['width'] ?>" 
+                                height="<?= $icons_size[$type['type_class']]['height'] ?>"
+                            >
+                                <use xlink:href="#icon-filter-<?= $type['type_class'] ?>"></use>
                             </svg>
                         </a>
                     </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button" href="#">
-                            <span class="visually-hidden">Видео</span>
-                            <svg class="filters__icon" width="24" height="16">
-                                <use xlink:href="#icon-filter-video"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button" href="#">
-                            <span class="visually-hidden">Текст</span>
-                            <svg class="filters__icon" width="20" height="21">
-                                <use xlink:href="#icon-filter-text"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button" href="#">
-                            <span class="visually-hidden">Цитата</span>
-                            <svg class="filters__icon" width="21" height="20">
-                                <use xlink:href="#icon-filter-quote"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button" href="#">
-                            <span class="visually-hidden">Ссылка</span>
-                            <svg class="filters__icon" width="21" height="18">
-                                <use xlink:href="#icon-filter-link"></use>
-                            </svg>
-                        </a>
-                    </li>
+                    <?php endforeach ?>
                 </ul>
             </div>
         </div>
         <div class="popular__posts">
             <?php foreach($posts as $post): ?>
             <?php $post_date = date_create($post['date']) ?>
-            <article class="popular__post post <?= hsc($post['type']) ?>">
+            <article class="popular__post post <?= 'post-' . hsc($post['type_class']) ?>">
                 <header class="post__header">
-                    <h2><?= hsc($post['title']) ?></h2>
+                    <h2><?= hsc($post['type_name']) ?></h2>
                 </header>
-                <div class="post__main ">
-                    <?php if ($post['type'] === 'post-quote'): ?>
+                <div class="post__main">
+                    <?php if ($post['type_class'] === 'quote'): ?>
                     <blockquote>
                         <p><?= hsc($post['content']) ?></p>
-                        <cite><?= hsc($post['user_name']) ?></cite>
+                        <cite><?= hsc($post['username']) ?></cite>
                     </blockquote>
-                    <?php elseif ($post['type'] === 'post-text'): ?>
+                    <?php elseif ($post['type_class'] === 'text'): ?>
                     <p><?= hsc(reduce_text($post['content'], 300)) ?></p>
                     <?php if (mb_strlen($post['content']) > 300): ?>
                     <a class="post-text__more-link" href="#">Читать далее</a>
                     <?php endif ?>
-                    <?php elseif ($post['type'] === 'post-photo'): ?>
+                    <?php elseif ($post['type_class'] === 'photo'): ?>
                     <div class="post-photo__image-wrapper">
                         <img src="img/<?= hsc($post['content']) ?>" alt="Фото от пользователя" width="360" height="240">
                     </div>
-                    <?php elseif ($post['type'] === 'post-link'): ?>
+                    <?php elseif ($post['type_class'] === 'link'): ?>
                     <div class="post-link__wrapper">
                         <a class="post-link__external" href="http://<?= hsc($post['content']) ?>" title="Перейти по ссылке">
                             <div class="post-link__info-wrapper">
@@ -114,7 +88,7 @@
                                     <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
                                 </div>
                                 <div class="post-link__info">
-                                    <h3><?= hsc($post['title']) ?></h3>
+                                    <h3><?= hsc($post['type_name']) ?></h3>
                                 </div>
                             </div>
                             <span><?= hsc($post['content']) ?></span>
@@ -129,7 +103,7 @@
                                 <img class="post__author-avatar" src="img/<?= hsc($post['user_picture']) ?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?= hsc($post['user_name']) ?></b>
+                                <b class="post__author-name"><?= hsc($post['username']) ?></b>
                                 <time 
                                     class="post__time" 
                                     datetime="<?= hsc($post['date']) ?>" 
@@ -147,7 +121,7 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?= $post['like_count'] ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
