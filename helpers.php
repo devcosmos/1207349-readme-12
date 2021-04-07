@@ -299,10 +299,10 @@ function reduce_text(string $text, int $max_symbols = 300)
 
 /**
  * Узнаём дату в виде количества прошедших с данного момента минут, часов, дней, недель или месяцев
- * @param object $date дата, когда произошло событие
+ * @param datetime $date дата, когда произошло событие
  * @return string 
  */
-function get_date_diff_from_now(object $date) 
+function get_date_diff_from_now(datetime $date) 
 {
     $date_now = date_create("now");
     $date_diff = date_diff($date_now, $date);
@@ -332,12 +332,12 @@ function get_date_diff_from_now(object $date)
 
 /**
  * Получаем ответ на запрос в виде массива или false, если произошла ошибка
- * @param object $db объект БД
+ * @param mysqli $db объект БД
  * @param string $sql_select запрос в БД
  * @return array ответ БД на запрос в виде массива
  * @throws mysqli_sql_exception
  */
-function select_query_and_fetch_all(object $db, string $sql_select) 
+function select_query_and_fetch_all(mysqli $db, string $sql_select) 
 {
     $result = $db->query($sql_select);
 
