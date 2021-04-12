@@ -37,13 +37,13 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="#">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?= $filter_post_type_id === 0 ? 'filters__button--active' : '' ?>" href="/">
                             <span>Все</span>
                         </a>
                     </li>
                     <?php foreach ($content_types as $type): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= $type['type_class'] ?> button" href="#">
+                        <a class="filters__button filters__button--<?= $type['type_class'] ?> button <?= $filter_post_type_id === $type['id'] ? 'filters__button--active' : '' ?>" href="<?= add_get_param('type_id', $type['id']) ?>">
                             <span class="visually-hidden"><?= $type['type_name'] ?></span>
                             <svg 
                                 class="filters__icon" 
@@ -63,7 +63,7 @@
             <?php $post_date = date_create($post['date']) ?>
             <article class="popular__post post <?= 'post-' . hsc($post['type_class']) ?>">
                 <header class="post__header">
-                    <h2><?= hsc($post['type_name']) ?></h2>
+                    <a href="<?= '/post.php' . add_get_param('id', $post['id'])?>"><h2><?= hsc($post['type_name']) ?></h2></a>
                 </header>
                 <div class="post__main">
                     <?php if ($post['type_class'] === 'quote'): ?>

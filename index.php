@@ -9,17 +9,22 @@ $db->set_charset($config['db']['charset']);
 
 require 'helpers.php';
 
+$filter_post_type_id = $_GET['type_id'] ?? 0;
+
 $sql_select_content_types = '
     SELECT * FROM content_types
 ';
 $sql_select_popular_posts = '
-    SELECT ct.type_name, ct.type_class, p.content, u.username, u.user_picture, COUNT(l.post_id) AS like_count
+    SELECT ct.type_name, ct.type_class, p.id, p.content, u.username, u.user_picture, COUNT(l.post_id) AS like_count
       FROM posts AS p 
       JOIN users AS u ON p.user_id = u.id 
       JOIN content_types AS ct ON p.content_type_id = ct.id 
  LEFT JOIN likes AS l ON p.id = l.post_id 
-     GROUP BY p.id
-     ORDER BY show_count DESC
+';
+$sql_select_popular_posts .= $filter_post_type_id === 0 ? '' : 'WHERE ct.id = \'' . $filter_post_type_id . '\'';
+$sql_select_popular_posts .= '
+    GROUP BY p.id
+    ORDER BY show_count DESC
 ';
 
 $content_types = select_query_and_fetch_all($db, $sql_select_content_types);
@@ -44,7 +49,8 @@ foreach ($popular_posts as $i => $post) {
 $main_content = include_template('main.php', [
     'posts' => $posts_with_date,
     'content_types' => $content_types,
-    'icons_size' => $icons_size
+    'icons_size' => $icons_size,
+    'filter_post_type_id' => $filter_post_type_id,
 ]);
 $layout_content = include_template('layout.php', [
     'content' => $main_content, 
