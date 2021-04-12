@@ -343,3 +343,17 @@ function select_query_and_fetch_all(mysqli $db, string $sql_select)
 
     return $result->fetch_all(MYSQLI_ASSOC);
 }
+
+/**
+ * Добавляем новый GET параметр в уже имеющиеся
+ * @param string $new_key ключ параметра
+ * @param string $new_value значение параметра
+ * @return string возвращает все параметры в виде строки 
+ */
+function add_get_param($new_key, $new_value) {
+    $params = $_GET;
+    $params[$new_key] = $new_value;
+    $query = http_build_query($params);
+
+    return $url = "?" . $query;
+}
