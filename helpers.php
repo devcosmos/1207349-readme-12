@@ -331,10 +331,10 @@ function get_date_diff_from_now(datetime $date)
 }
 
 /**
- * Получаем ответ на запрос в виде массива или false, если произошла ошибка
+ * Получаем результаты на запрос как двумерные массивы
  * @param mysqli $db объект БД
  * @param string $sql_select запрос в БД
- * @return array ответ БД на запрос в виде массива
+ * @return array 
  * @throws mysqli_sql_exception
  */
 function select_query_and_fetch_all(mysqli $db, string $sql_select) 
@@ -342,6 +342,20 @@ function select_query_and_fetch_all(mysqli $db, string $sql_select)
     $result = $db->query($sql_select);
 
     return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+/**
+ * Получаем один результат как ассоциативный массив
+ * @param mysqli $db объект БД
+ * @param string $sql_select запрос в БД
+ * @return array 
+ * @throws mysqli_sql_exception
+ */
+function select_query_and_fetch_assoc(mysqli $db, string $sql_select) 
+{
+    $result = $db->query($sql_select);
+
+    return $result->fetch_assoc();
 }
 
 /**
