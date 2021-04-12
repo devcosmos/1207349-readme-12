@@ -43,14 +43,14 @@
                     </li>
                     <?php foreach ($content_types as $type): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= $type['type_class'] ?> button <?= $filter_post_type_id === $type['id'] ? 'filters__button--active' : '' ?>" href="<?= add_get_param('type_id', $type['id']) ?>">
-                            <span class="visually-hidden"><?= $type['type_name'] ?></span>
+                        <a class="filters__button filters__button--<?= hsc($type['type_class']) ?> button <?= $filter_post_type_id === $type['id'] ? 'filters__button--active' : '' ?>" href="<?= hsc(add_get_param('type_id', $type['id'])) ?>">
+                            <span class="visually-hidden"><?= hsc($type['type_name']) ?></span>
                             <svg 
                                 class="filters__icon" 
-                                width="<?= $icons_size[$type['type_class']]['width'] ?>" 
-                                height="<?= $icons_size[$type['type_class']]['height'] ?>"
+                                width="<?= hsc($icons_size[$type['type_class']]['width']) ?>" 
+                                height="<?= hsc($icons_size[$type['type_class']]['height']) ?>"
                             >
-                                <use xlink:href="#icon-filter-<?= $type['type_class'] ?>"></use>
+                                <use xlink:href="#icon-filter-<?= hsc($type['type_class']) ?>"></use>
                             </svg>
                         </a>
                     </li>
@@ -63,7 +63,7 @@
             <?php $post_date = date_create($post['date']) ?>
             <article class="popular__post post <?= 'post-' . hsc($post['type_class']) ?>">
                 <header class="post__header">
-                    <a href="<?= '/post.php' . add_get_param('id', $post['id'])?>"><h2><?= hsc($post['type_name']) ?></h2></a>
+                    <a href="<?= '/post.php' . hsc(add_get_param('post_id', $post['id']))?>"><h2><?= hsc($post['type_name']) ?></h2></a>
                 </header>
                 <div class="post__main">
                     <?php if ($post['type_class'] === 'quote'): ?>
@@ -121,7 +121,7 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span><?= $post['like_count'] ?></span>
+                                <span><?= hsc($post['like_count']) ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
