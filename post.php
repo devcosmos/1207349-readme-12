@@ -9,7 +9,7 @@ $db->set_charset($config['db']['charset']);
 
 require 'helpers.php';
 
-$post_id = $_GET['post_id'] ?? 0;
+$post_id = intval($_GET['post_id']) ?? 0;
 
 $sql_select_post_by_id = '
     SELECT p.id, p.title, p.content, u.username, u.user_picture, ct.type_class, COUNT(l.post_id) AS like_count
@@ -17,8 +17,7 @@ $sql_select_post_by_id = '
       JOIN users AS u ON p.user_id = u.id
       JOIN content_types AS ct ON p.content_type_id = ct.id 
  LEFT JOIN likes AS l ON p.id = l.post_id
-     WHERE p.id = \'' . $post_id . '\'
-';
+     WHERE p.id = ' . $post_id;
 
 $post = select_query_and_fetch_assoc($db, $sql_select_post_by_id);
 

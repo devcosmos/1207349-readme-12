@@ -9,7 +9,7 @@ $db->set_charset($config['db']['charset']);
 
 require 'helpers.php';
 
-$filter_post_type_id = $_GET['type_id'] ?? 0;
+$filter_post_type_id = intval($_GET['type_id']) ?? 0;
 
 $sql_select_content_types = '
     SELECT * FROM content_types
@@ -21,7 +21,7 @@ $sql_select_popular_posts = '
       JOIN content_types AS ct ON p.content_type_id = ct.id 
  LEFT JOIN likes AS l ON p.id = l.post_id 
 ';
-$sql_select_popular_posts .= $filter_post_type_id === 0 ? '' : 'WHERE ct.id = \'' . $filter_post_type_id . '\'';
+$sql_select_popular_posts .= $filter_post_type_id === 0 ? '' : 'WHERE ct.id = ' . $filter_post_type_id;
 $sql_select_popular_posts .= '
     GROUP BY p.id
     ORDER BY show_count DESC
