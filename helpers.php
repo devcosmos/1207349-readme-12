@@ -331,31 +331,37 @@ function get_date_diff_from_now(datetime $date)
 }
 
 /**
- * Получаем результаты на запрос как двумерные массивы
+ * Получаем результаты на запрос как двумерные массивы или один результат как ассоциативный массив
  * @param mysqli $db объект БД
  * @param string $sql_select запрос в БД
- * @return array 
+ * @param bool $fetch_all вернуть первое или все значения
+ * @return array
  * @throws mysqli_sql_exception
  */
-function select_query_and_fetch_all(mysqli $db, string $sql_select) 
+function select_query_and_fetch(mysqli $db, string $sql_select, bool $fetch_all = true) 
 {
     $result = $db->query($sql_select);
 
-    return $result->fetch_all(MYSQLI_ASSOC);
+    return $fetch_all ? $result->fetch_all(MYSQLI_ASSOC) : $result->fetch_assoc();
 }
 
 /**
- * Получаем один результат как ассоциативный массив
+ * Получаем результаты на запрос c использованием подготовленных выражений как двумерные массивы или один результат как ассоциативный массив
  * @param mysqli $db объект БД
  * @param string $sql_select запрос в БД
+ * @param string $type тип данных для параметра
+ * @param string $params
  * @return array 
  * @throws mysqli_sql_exception
  */
-function select_query_and_fetch_assoc(mysqli $db, string $sql_select) 
+function select_query_with_stmt_and_fetch(mysqli $db, string $sql_select, string $type, array $params, bool $fetch_all = true) 
 {
-    $result = $db->query($sql_select);
+    $stmt = $db->prepare($sql_select);
+    $stmt->bind_param($type, ...$params);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    return $result->fetch_assoc();
+    return $fetch_all ? $result->fetch_all(MYSQLI_ASSOC) : $result->fetch_assoc();
 }
 
 /**

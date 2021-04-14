@@ -12,7 +12,7 @@ $sql_select_post_by_id = '
  LEFT JOIN likes AS l ON p.id = l.post_id
      WHERE p.id = ' . $post_id;
 
-$post = select_query_and_fetch_assoc($db, $sql_select_post_by_id);
+$post = select_query_and_fetch($db, $sql_select_post_by_id, false);
 
 if ($post['id'] === NULL || $post_id === 0) {
     header("HTTP/1.0 404 Not Found");

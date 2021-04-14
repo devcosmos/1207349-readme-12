@@ -2,7 +2,8 @@
 require 'functions.php';
 require 'helpers.php';
 
-$filter_post_type_id = intval($_GET['type_id']) ?? 0;
+$filter_post_type_id = $_GET['type_id'] ?? 0;
+$filter_post_type_id = intval($filter_post_type_id);
 
 $sql_select_content_types = '
     SELECT * FROM content_types
@@ -14,14 +15,20 @@ $sql_select_popular_posts = '
       JOIN content_types AS ct ON p.content_type_id = ct.id 
  LEFT JOIN likes AS l ON p.id = l.post_id 
 ';
-$sql_select_popular_posts .= $filter_post_type_id === 0 ? '' : 'WHERE ct.id = ' . $filter_post_type_id;
+if ($filter_post_type_id !== 0) {
+    $sql_select_popular_posts .= 'WHERE ct.id = ?';
+}
 $sql_select_popular_posts .= '
     GROUP BY p.id
     ORDER BY show_count DESC
 ';
 
-$content_types = select_query_and_fetch_all($db, $sql_select_content_types);
-$popular_posts = select_query_and_fetch_all($db, $sql_select_popular_posts);
+if ($filter_post_type_id !== 0) {
+    $popular_posts = select_query_with_stmt_and_fetch($db, $sql_select_popular_posts, 'i', [$filter_post_type_id]);
+} else {
+    $popular_posts = select_query_and_fetch($db, $sql_select_popular_posts);
+}
+$content_types = select_query_and_fetch($db, $sql_select_content_types);
 
 $is_auth = rand(0, 1);
 $user_name = 'Валерий';
