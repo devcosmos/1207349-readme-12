@@ -377,3 +377,12 @@ function add_get_param($new_key, $new_value) {
 
     return $url = "?" . $query;
 }
+
+/**
+ * Вывести код ошибка и закончить работу скриптов
+ * @param int $error_code
+ */
+function get_error_code(int $error_code) {
+    http_response_code($error_code);
+    die;
+}
