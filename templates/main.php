@@ -47,8 +47,8 @@
                             <span class="visually-hidden"><?= hsc($type['type_name']) ?></span>
                             <svg 
                                 class="filters__icon" 
-                                width="<?= hsc($icons_size[$type['type_class']]['width']) ?>" 
-                                height="<?= hsc($icons_size[$type['type_class']]['height']) ?>"
+                                width="<?= hsc($type['icon_width']) ?>" 
+                                height="<?= hsc($type['icon_height']) ?>"
                             >
                                 <use xlink:href="#icon-filter-<?= hsc($type['type_class']) ?>"></use>
                             </svg>

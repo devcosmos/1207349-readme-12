@@ -33,13 +33,6 @@ $content_types = select_query_and_fetch($db, $sql_select_content_types);
 $is_auth = rand(0, 1);
 $user_name = 'Валерий';
 $title = 'Readme: Популярное';
-$icons_size = [
-    'text' => [ 'width' => '20', 'height' => '21'],
-    'quote' => [ 'width' => '21', 'height' => '20'],
-    'photo' => [ 'width' => '22', 'height' => '18'],
-    'video' => [ 'width' => '24', 'height' => '16'],
-    'link' => [ 'width' => '21', 'height' => '18'],
-];
 
 $posts_with_date = [];
 foreach ($popular_posts as $i => $post) {
@@ -49,7 +42,6 @@ foreach ($popular_posts as $i => $post) {
 $main_content = include_template('main.php', [
     'posts' => $posts_with_date,
     'content_types' => $content_types,
-    'icons_size' => $icons_size,
     'filter_post_type_id' => $filter_post_type_id,
 ]);
 $layout_content = include_template('layout.php', [
