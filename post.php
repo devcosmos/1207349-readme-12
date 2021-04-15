@@ -1,6 +1,5 @@
 <?php
-require 'functions.php';
-require 'helpers.php';
+require 'common.php';
 
 $post_id = $_GET['post_id'] ?? 0;
 $post_id = intval($post_id);
@@ -19,10 +18,6 @@ $post = select_query_with_stmt_and_fetch($db, $sql_select_post_by_id, 'i', [$pos
 if ($post['id'] === NULL || $post_id === 0) {
     get_error_code(404);
 }
-
-$is_auth = rand(0, 1);
-$user_name = 'Валерий';
-$title = 'Readme: Популярное';
 
 $post_content = include_template('post/post-' . $post['type_class'] . '.php', [
     'post' => $post,

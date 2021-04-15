@@ -1,6 +1,5 @@
 <?php
-require 'functions.php';
-require 'helpers.php';
+require 'common.php';
 
 $filter_post_type_id = $_GET['type_id'] ?? 0;
 $filter_post_type_id = intval($filter_post_type_id);
@@ -29,10 +28,6 @@ if ($filter_post_type_id !== 0) {
     $popular_posts = select_query_and_fetch($db, $sql_select_popular_posts);
 }
 $content_types = select_query_and_fetch($db, $sql_select_content_types);
-
-$is_auth = rand(0, 1);
-$user_name = 'Валерий';
-$title = 'Readme: Популярное';
 
 $posts_with_date = [];
 foreach ($popular_posts as $i => $post) {
