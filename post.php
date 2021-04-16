@@ -27,7 +27,7 @@ $sql_select_comments_from_post = '
     SELECT u.username, u.user_picture, c.content, c.dt_add
       FROM comments AS c
       JOIN users AS u ON c.user_id = u.id
-    WHERE c.post_id = ?
+     WHERE c.post_id = ?
 ';
 
 $post = select_query_with_stmt_and_fetch($db, $sql_select_post_by_id, 'iii', [$post_id, $post_id, $post_id], false);
