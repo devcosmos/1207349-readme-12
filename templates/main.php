@@ -59,7 +59,7 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach($posts as $post): ?>
+            <?php foreach ($posts as $post): ?>
             <?php $post_date = date_create($post['date']) ?>
             <article class="popular__post post <?= 'post-' . hsc($post['type_class']) ?>">
                 <header class="post__header">
