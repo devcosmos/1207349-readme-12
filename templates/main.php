@@ -43,7 +43,7 @@
                     </li>
                     <?php foreach ($content_types as $type): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?= hsc($type['type_class']) ?> button <?= $filter_post_type_id === intval($type['id']) ? 'filters__button--active' : '' ?>" href="<?= hsc(add_get_param('type_id', $type['id'])) ?>">
+                        <a class="filters__button filters__button--<?= hsc($type['type_class']) ?> button <?= $filter_post_type_id === $type['id'] ? 'filters__button--active' : '' ?>" href="<?= hsc(add_get_param('type_id', $type['id'])) ?>">
                             <span class="visually-hidden"><?= hsc($type['type_name']) ?></span>
                             <svg 
                                 class="filters__icon" 

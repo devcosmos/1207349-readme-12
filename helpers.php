@@ -382,6 +382,8 @@ function prepared_query(mysqli $db, string $sql, array $params, string $types = 
  */
 function select_query(mysqli $db, string $sql, array $params = [], string $types = ""): mysqli_result
 {
+    $db->options(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
+
     if (!$params) {
         return $db->query($sql);
     }
