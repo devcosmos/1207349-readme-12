@@ -27,6 +27,8 @@ if ($post['id'] === NULL || $post_id === 0) {
 
 $post_comments = select_query_with_stmt_and_fetch($db, $sql_select_comments_from_post, 'i', [$post_id]);
 
+$title = $post['title'];
+
 $post_content = include_template('post/post-' . $post['type_class'] . '.php', ['post' => $post]);
 $post_comments_content = include_template('post/post-comments.php', ['post_comments' => $post_comments]);
 $main_content = include_template('post-details.php', [
