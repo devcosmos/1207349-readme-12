@@ -5,22 +5,12 @@ $post_id = $_GET['post_id'] ?? 0;
 $post_id = intval($post_id);
 
 $sql_select_post_by_id = '
-    SELECT p.id, p.title, p.content, u.username, u.user_picture, ct.type_class, l.like_count, c.comment_count
+    SELECT p.id, p.title, p.content, u.username, u.user_picture, ct.type_class,
+    (SELECT count(*) FROM likes WHERE post_id = p.id) AS like_count, 
+    (SELECT count(*) FROM comments WHERE post_id = p.id) AS comment_count
       FROM posts AS p 
       JOIN users AS u ON p.user_id = u.id
       JOIN content_types AS ct ON p.content_type_id = ct.id
- LEFT JOIN ( 
-        SELECT post_id, COUNT(post_id) AS like_count
-          FROM likes
-         WHERE post_id = ? 
-         GROUP BY post_id
-    ) AS l ON p.id = l.post_id 
- LEFT JOIN ( 
-        SELECT post_id, COUNT(post_id) AS comment_count
-          FROM comments
-         WHERE post_id = ?  
-         GROUP BY post_id
-    ) AS c ON p.id = c.post_id 
      WHERE p.id = ?
 ';
 $sql_select_comments_from_post = '
@@ -30,7 +20,7 @@ $sql_select_comments_from_post = '
      WHERE c.post_id = ?
 ';
 
-$post = select_query_with_stmt_and_fetch($db, $sql_select_post_by_id, 'iii', [$post_id, $post_id, $post_id], false);
+$post = select_query_with_stmt_and_fetch($db, $sql_select_post_by_id, 'i', [$post_id], false);
 if ($post['id'] === NULL || $post_id === 0) {
     get_error_code(404);
 }

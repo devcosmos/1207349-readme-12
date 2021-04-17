@@ -8,20 +8,12 @@ $sql_select_content_types = '
     SELECT * FROM content_types
 ';
 $sql_select_popular_posts = '
-    SELECT ct.type_name, ct.type_class, p.id, p.content, u.username, u.user_picture, l.like_count, c.comment_count
+    SELECT ct.type_name, ct.type_class, p.id, p.content, u.username, u.user_picture, 
+        (SELECT count(*) FROM likes WHERE post_id = p.id) AS like_count, 
+        (SELECT count(*) FROM comments WHERE post_id = p.id) AS comment_count
       FROM posts AS p 
       JOIN users AS u ON p.user_id = u.id 
       JOIN content_types AS ct ON p.content_type_id = ct.id 
- LEFT JOIN (
-        SELECT post_id, COUNT(post_id) AS like_count 
-          FROM likes
-         GROUP BY post_id
-    ) AS l ON p.id = l.post_id 
-LEFT JOIN (
-        SELECT post_id, COUNT(post_id) AS comment_count 
-          FROM comments
-         GROUP BY post_id
-    ) AS c ON p.id = c.post_id 
 ';
 if ($filter_post_type_id !== 0) {
     $sql_select_popular_posts .= 'WHERE ct.id = ?';
