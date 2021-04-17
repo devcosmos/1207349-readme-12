@@ -20,12 +20,12 @@ $sql_select_comments_from_post = '
      WHERE c.post_id = ?
 ';
 
-$post = select_query_with_stmt_and_fetch($db, $sql_select_post_by_id, 'i', [$post_id], false);
+$post = select_query($db, $sql_select_post_by_id, [$post_id], 'i')->fetch_assoc();
 if ($post['id'] === NULL || $post_id === 0) {
     get_error_code(404);
 }
 
-$post_comments = select_query_with_stmt_and_fetch($db, $sql_select_comments_from_post, 'i', [$post_id]);
+$post_comments = select_query($db, $sql_select_comments_from_post, [$post_id], 'i')->fetch_all(MYSQLI_ASSOC);
 
 $title = $post['title'];
 

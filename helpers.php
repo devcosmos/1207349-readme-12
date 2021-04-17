@@ -331,40 +331,6 @@ function get_date_diff_from_now(datetime $date)
 }
 
 /**
- * Получаем результаты на запрос как двумерные массивы или один результат как ассоциативный массив
- * @param mysqli $db объект БД
- * @param string $sql_select запрос в БД
- * @param bool $fetch_all вернуть первое или все значения
- * @return array
- * @throws mysqli_sql_exception
- */
-function select_query_and_fetch(mysqli $db, string $sql_select, bool $fetch_all = true) 
-{
-    $result = $db->query($sql_select);
-
-    return $fetch_all ? $result->fetch_all(MYSQLI_ASSOC) : $result->fetch_assoc();
-}
-
-/**
- * Получаем результаты на запрос c использованием подготовленных выражений как двумерные массивы или один результат как ассоциативный массив
- * @param mysqli $db объект БД
- * @param string $sql_select запрос в БД
- * @param string $type тип данных для параметра
- * @param string $params
- * @return array 
- * @throws mysqli_sql_exception
- */
-function select_query_with_stmt_and_fetch(mysqli $db, string $sql_select, string $type, array $params, bool $fetch_all = true) 
-{
-    $stmt = $db->prepare($sql_select);
-    $stmt->bind_param($type, ...$params);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    return $fetch_all ? $result->fetch_all(MYSQLI_ASSOC) : $result->fetch_assoc();
-}
-
-/**
  * Добавляем новый GET параметр в уже имеющиеся
  * @param string $new_key ключ параметра
  * @param string $new_value значение параметра
@@ -385,4 +351,39 @@ function add_get_param($new_key, $new_value) {
 function get_error_code(int $error_code) {
     http_response_code($error_code);
     die;
+}
+
+/**
+ * Функция, которая выполняет подготовленные запросы и возвращает mysqli_stmt
+ * @param mysqli $db объект БД
+ * @param string $sql запрос в БД
+ * @param array $params
+ * @param string $type тип данных для параметра
+ * @return mysqli_stmt
+ * @throws mysqli_sql_exception
+ */
+function prepared_query(mysqli $db, string $sql, array $params, string $types = ""): mysqli_stmt
+{
+    $types = $types ?: str_repeat("s", count($params));
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param($types, ...$params);
+    $stmt->execute();
+    return $stmt;
+}
+
+/**
+ * Cлужебная функция, которая выполняет запросы SELECT и возвращает mysqli_result
+ * @param mysqli $db объект БД
+ * @param string $sql запрос в БД
+ * @param array $params
+ * @param string $type тип данных для параметра
+ * @return mysqli_result 
+ * @throws mysqli_sql_exception
+ */
+function select_query(mysqli $db, string $sql, array $params = [], string $types = ""): mysqli_result
+{
+    if (!$params) {
+        return $db->query($sql);
+    }
+    return prepared_query($db, $sql, $params, $types)->get_result();
 }

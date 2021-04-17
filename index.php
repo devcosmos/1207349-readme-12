@@ -15,19 +15,18 @@ $sql_select_popular_posts = '
       JOIN users AS u ON p.user_id = u.id 
       JOIN content_types AS ct ON p.content_type_id = ct.id 
 ';
+
+$params = [];
 if ($filter_post_type_id !== 0) {
     $sql_select_popular_posts .= 'WHERE ct.id = ?';
+    $params = [$filter_post_type_id];
 }
 $sql_select_popular_posts .= '
     ORDER BY show_count DESC
 ';
 
-if ($filter_post_type_id !== 0) {
-    $popular_posts = select_query_with_stmt_and_fetch($db, $sql_select_popular_posts, 'i', [$filter_post_type_id]);
-} else {
-    $popular_posts = select_query_and_fetch($db, $sql_select_popular_posts);
-}
-$content_types = select_query_and_fetch($db, $sql_select_content_types);
+$popular_posts = select_query($db, $sql_select_popular_posts, $params, 'i')->fetch_all(MYSQLI_ASSOC);
+$content_types = select_query($db, $sql_select_content_types)->fetch_all(MYSQLI_ASSOC);
 
 foreach ($popular_posts as $i => $post) {
     $popular_posts[$i]['date'] = generate_random_date($i);
