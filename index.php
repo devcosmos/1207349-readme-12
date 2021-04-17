@@ -29,13 +29,12 @@ if ($filter_post_type_id !== 0) {
 }
 $content_types = select_query_and_fetch($db, $sql_select_content_types);
 
-$posts_with_date = [];
 foreach ($popular_posts as $i => $post) {
-    array_push($posts_with_date, array_merge($post, ['date' => generate_random_date($i)]));
+    $popular_posts[$i]['date'] = generate_random_date($i);
 }
 
 $main_content = include_template('main.php', [
-    'posts' => $posts_with_date,
+    'posts' => $popular_posts,
     'content_types' => $content_types,
     'filter_post_type_id' => $filter_post_type_id,
 ]);
