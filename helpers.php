@@ -345,11 +345,19 @@ function add_get_param($new_key, $new_value) {
 }
 
 /**
- * Вывести код ошибка и закончить работу скриптов
+ * Вывести шаблон с ошибкой и закончить работу скриптов
  * @param int $error_code
  */
 function get_error_code(int $error_code) {
     http_response_code($error_code);
+
+    print(
+        include_template('layout.php', [
+            'content' => include_template('error.php'), 
+            'is_auth' => false, 
+            'title' => 'Страница не найдена',
+        ])
+    );
     die;
 }
 

@@ -5,7 +5,7 @@ $error_404 = false;
 $post_id = $_GET['post_id'] ?? 0;
 
 if ($post_id === 0) {
-    $error_404 = true;
+    get_error_code(404);
 } else {
     $post_id = intval($post_id);
 
@@ -40,14 +40,8 @@ if ($post_id === 0) {
             'post' => $post,
         ]);
     } else {
-        $error_404 = true;
+        get_error_code(404);
     }
-}
-
-if ($error_404) {
-    $main_content = include_template('error.php');
-    $title = 'Страница не найдена';
-    http_response_code(404);
 }
 
 $layout_content = include_template('layout.php', [
