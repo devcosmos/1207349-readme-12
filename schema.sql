@@ -15,7 +15,9 @@ CREATE TABLE users (
 CREATE TABLE content_types (
   id INT AUTO_INCREMENT PRIMARY KEY,
   type_name VARCHAR(255) NOT NULL UNIQUE,
-  type_class VARCHAR(255) NOT NULL UNIQUE
+  type_class VARCHAR(255) NOT NULL UNIQUE,
+  icon_width INT,
+  icon_height INT
 );
 
 CREATE TABLE posts (

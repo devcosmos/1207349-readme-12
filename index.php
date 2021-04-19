@@ -1,50 +1,41 @@
 <?php
-date_default_timezone_set("Europe/Moscow");
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+require 'common.php';
 
-$config = require 'config.php';
-
-$db = new mysqli($config['db']['host'], $config['db']['username'], $config['db']['password'], $config['db']['dbname']);
-$db->set_charset($config['db']['charset']);
-
-require 'helpers.php';
+$filter_post_type_id = $_GET['type_id'] ?? 0;
+$filter_post_type_id = intval($filter_post_type_id);
 
 $sql_select_content_types = '
     SELECT * FROM content_types
 ';
 $sql_select_popular_posts = '
-    SELECT ct.type_name, ct.type_class, p.content, u.username, u.user_picture, COUNT(l.post_id) AS like_count
+    SELECT ct.type_name, ct.type_class, p.id, p.content, u.username, u.user_picture, 
+        (SELECT count(*) FROM likes WHERE post_id = p.id) AS like_count, 
+        (SELECT count(*) FROM comments WHERE post_id = p.id) AS comment_count
       FROM posts AS p 
       JOIN users AS u ON p.user_id = u.id 
       JOIN content_types AS ct ON p.content_type_id = ct.id 
- LEFT JOIN likes AS l ON p.id = l.post_id 
-     GROUP BY p.id
-     ORDER BY show_count DESC
 ';
 
-$content_types = select_query_and_fetch_all($db, $sql_select_content_types);
-$popular_posts = select_query_and_fetch_all($db, $sql_select_popular_posts);
+$params = [];
+if ($filter_post_type_id !== 0) {
+    $sql_select_popular_posts .= 'WHERE ct.id = ?';
+    $params = [$filter_post_type_id];
+}
+$sql_select_popular_posts .= '
+    ORDER BY show_count DESC
+';
 
-$is_auth = rand(0, 1);
-$user_name = 'Валерий';
-$title = 'Readme: Популярное';
-$icons_size = [
-    'text' => [ 'width' => '20', 'height' => '21'],
-    'quote' => [ 'width' => '21', 'height' => '20'],
-    'photo' => [ 'width' => '22', 'height' => '18'],
-    'video' => [ 'width' => '24', 'height' => '16'],
-    'link' => [ 'width' => '21', 'height' => '18'],
-];
+$popular_posts = select_query($db, $sql_select_popular_posts, $params, 'i')->fetch_all(MYSQLI_ASSOC);
+$content_types = select_query($db, $sql_select_content_types)->fetch_all(MYSQLI_ASSOC);
 
-$posts_with_date = [];
 foreach ($popular_posts as $i => $post) {
-    array_push($posts_with_date, array_merge($post, ['date' => generate_random_date($i)]));
+    $popular_posts[$i]['date'] = generate_random_date($i);
 }
 
 $main_content = include_template('main.php', [
-    'posts' => $posts_with_date,
+    'posts' => $popular_posts,
     'content_types' => $content_types,
-    'icons_size' => $icons_size
+    'filter_post_type_id' => $filter_post_type_id,
 ]);
 $layout_content = include_template('layout.php', [
     'content' => $main_content, 

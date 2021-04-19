@@ -331,15 +331,67 @@ function get_date_diff_from_now(datetime $date)
 }
 
 /**
- * Получаем ответ на запрос в виде массива или false, если произошла ошибка
+ * Добавляем новый GET параметр в уже имеющиеся
+ * @param string $new_key ключ параметра
+ * @param string $new_value значение параметра
+ * @return string возвращает все параметры в виде строки 
+ */
+function add_get_param($new_key, $new_value) {
+    $params = $_GET;
+    $params[$new_key] = $new_value;
+    $query = http_build_query($params);
+
+    return $url = "?" . $query;
+}
+
+/**
+ * Вывести шаблон с ошибкой и закончить работу скриптов
+ * @param int $error_code
+ */
+function get_error_code(int $error_code) {
+    http_response_code($error_code);
+
+    print(
+        include_template('layout.php', [
+            'content' => include_template('error.php'), 
+            'is_auth' => false, 
+            'title' => 'Страница не найдена',
+        ])
+    );
+    die;
+}
+
+/**
+ * Функция, которая выполняет подготовленные запросы и возвращает mysqli_stmt
  * @param mysqli $db объект БД
- * @param string $sql_select запрос в БД
- * @return array ответ БД на запрос в виде массива
+ * @param string $sql запрос в БД
+ * @param array $params
+ * @param string $type тип данных для параметра
+ * @return mysqli_stmt
  * @throws mysqli_sql_exception
  */
-function select_query_and_fetch_all(mysqli $db, string $sql_select) 
+function prepared_query(mysqli $db, string $sql, array $params, string $types = ""): mysqli_stmt
 {
-    $result = $db->query($sql_select);
+    $types = $types ?: str_repeat("s", count($params));
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param($types, ...$params);
+    $stmt->execute();
+    return $stmt;
+}
 
-    return $result->fetch_all(MYSQLI_ASSOC);
+/**
+ * Cлужебная функция, которая выполняет запросы SELECT и возвращает mysqli_result
+ * @param mysqli $db объект БД
+ * @param string $sql запрос в БД
+ * @param array $params
+ * @param string $type тип данных для параметра
+ * @return mysqli_result 
+ * @throws mysqli_sql_exception
+ */
+function select_query(mysqli $db, string $sql, array $params = [], string $types = ""): mysqli_result
+{
+    if (!$params) {
+        return $db->query($sql);
+    }
+    return prepared_query($db, $sql, $params, $types)->get_result();
 }

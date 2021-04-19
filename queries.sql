@@ -1,10 +1,10 @@
 -- список типов контента для поста
-INSERT INTO content_types (type_name, type_class) 
-VALUES ('Текст', 'text'),
-       ('Цитата', 'quote'),
-       ('Картинка', 'photo'),
-       ('Видео', 'video'),
-       ('Ссылка', 'link'); 
+INSERT INTO content_types (type_name, type_class, icon_width, icon_height) 
+VALUES ('Текст', 'text', 20, 21),
+       ('Цитата', 'quote', 21, 20),
+       ('Картинка', 'photo', 22, 18),
+       ('Видео', 'video', 24, 16),
+       ('Ссылка', 'link', 21, 18); 
 
 -- придумайте пару пользователей
 INSERT INTO users (email, password, username, user_picture) 
