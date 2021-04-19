@@ -27,10 +27,7 @@ if ($post_id === 0) {
 
     $post = select_query($db, $sql_select_post_by_id, [$post_id], 'i')->fetch_assoc();
 
-    if (!$post) {
-        $main_content = include_template('error.php');
-        $title = 'Страница не найдена';
-    } else {
+    if ($post) {
         $post_comments = select_query($db, $sql_select_comments_from_post, [$post_id], 'i')->fetch_all(MYSQLI_ASSOC);
 
         $title = $post['title'];
@@ -42,6 +39,9 @@ if ($post_id === 0) {
             'post_comments_content' => $post_comments_content,
             'post' => $post,
         ]);
+    } else {
+        $main_content = include_template('error.php');
+        $title = 'Страница не найдена';
     }
 }
 
