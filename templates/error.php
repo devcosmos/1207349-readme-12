@@ -1,7 +1,6 @@
 <main class="page__main page__main--search-results">
-  <h1 class="visually-hidden"><?= $error; ?></h1>
+  <h1 class="visually-hidden">Страница не найдена</h1>
   <section class="search">
-    <h2 class="visually-hidden">Результаты поиска</h2>
     <div class="search__results-wrapper">
       <div class="search__no-results container">
         <p class="search__no-results-info">К сожалению, страница не найдена.</p>
