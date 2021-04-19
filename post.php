@@ -29,9 +29,8 @@ $post = select_query($db, $sql_select_post_by_id, [$post_id], 'i')->fetch_assoc(
 if (!$post) {
     get_error_code(404);
 }
-$post_comments = select_query($db, $sql_select_comments_from_post, [$post_id], 'i')->fetch_all(MYSQLI_ASSOC);
 
-$title = $post['title'];
+$post_comments = select_query($db, $sql_select_comments_from_post, [$post_id], 'i')->fetch_all(MYSQLI_ASSOC);
 
 $post_content = include_template('post/post-' . $post['type_class'] . '.php', ['post' => $post]);
 $post_comments_content = include_template('post/post-comments.php', ['post_comments' => $post_comments]);
@@ -40,12 +39,11 @@ $main_content = include_template('post-details.php', [
     'post_comments_content' => $post_comments_content,
     'post' => $post,
 ]);
-
 $layout_content = include_template('layout.php', [
     'content' => $main_content, 
     'is_auth' => $is_auth, 
     'user_name' => $user_name, 
-    'title' => $title,
+    'title' => $post['title'],
 ]);
 
 print($layout_content);
