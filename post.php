@@ -21,7 +21,7 @@ $sql_select_comments_from_post = '
 ';
 
 $post = select_query($db, $sql_select_post_by_id, [$post_id], 'i')->fetch_assoc();
-if ($post['id'] === NULL || $post_id === 0) {
+if (empty($post) || $post_id === 0) {
     get_error_code(404);
 }
 
